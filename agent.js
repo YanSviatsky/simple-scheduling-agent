@@ -61,40 +61,23 @@ const processToolCalls = (tools) => {
         else if (toolName === 'deleteAppointment') {
             toolResponse = deleteAppointment(input);
         }
-
-        addToMemory('user', JSON.stringify({ toolName, input, toolResponse }));
     }
-
 }
 
-let steps = 0; // Failsafe so we don't run into an infinite loop and burn all our tokens
-let needUserInput = true;
-
 async function main() {
-    while (steps < 5) {
-        if (needUserInput) {
-            steps = 0
-            const userInput = await getUserInput('You: ');
-            needUserInput = false;
-            addToMemory('user', userInput);
-        }
+    while (true) {
+        const userInput = await getUserInput('You: ');
+        addToMemory('user', userInput);
 
         const llmResponse = await askGeminiWithMessages(memory);
-        addToMemory('model', JSON.stringify(llmResponse));
-
         const { tools, userResponse } = llmResponse;
 
-        // If we have a response for the user, no need to run tools (per our system prompt), hence the `continue` to restart the loop
         if (userResponse) {
             console.log(userResponse);
-            needUserInput = true;
             continue;
         }
 
         processToolCalls(tools);
-
-        await new Promise(r => setTimeout(r, 500)); // To avoid rate limiting
-        steps++;
     }
 }
 
