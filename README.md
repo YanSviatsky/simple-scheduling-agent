@@ -85,3 +85,6 @@ Checking availability for date: April 3rd, 1991
 Scheduling appointment for date: April 3rd, 1991
 Gemini: Your appointment has been moved to April 3rd, 1991 at 9:45 PM. I'm finished.
 ```
+
+If you want to be fancy, you can use [chalk](https://www.npmjs.com/package/chalk) to add colors
+<img width="616" height="218" alt="image" src="https://github.com/user-attachments/assets/84a3919f-6440-4a95-87d3-f3e72e0ca580" />
